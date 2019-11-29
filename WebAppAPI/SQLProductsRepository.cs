@@ -24,7 +24,13 @@ namespace WebAppAPI
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                //per esegurire e se non torna niente
+                connection.Execute(@" 
+               DELETE[dbo].[Products]
+                WHERE Id = @ProductId", new { ProductId = id });  
+            }
         }
 
         public IEnumerable<Product> Get() //install dapper nuget e un altro che non ricordo
@@ -60,12 +66,37 @@ namespace WebAppAPI
 
         public void Insert(Product product)
         {
-            throw new NotImplementedException();
+           using(var connection = new SqlConnection(_connectionString))
+            {
+                //per esegurire e se non torna niente
+                connection.Execute(@"
+        INSERT INTO [dbo].[Products]
+           ([Code]
+           ,[Name]
+           ,[Description]
+           ,[Price])
+         VALUES
+           (@Code
+           ,@Name
+           ,@Description
+           ,@Price)",product); //passo prodct capisce da solo dove mettere cosa con gli stessi nomi
+            }
         }
 
         public void Update(Product product)
         {
-            throw new NotImplementedException();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                //per esegurire e se non torna niente
+                connection.Execute(@" 
+                UPDATE[dbo].[Products]
+                   SET[Code] = @Code
+                      ,[Name] = @Name
+                      ,[Description] = @Description
+                      ,[Price] = @Price
+                 WHERE Id = @Id", product); //passo prodct capisce da solo dove mettere cosa con gli stessi nomi
+            }
+           
         }
     }
 }

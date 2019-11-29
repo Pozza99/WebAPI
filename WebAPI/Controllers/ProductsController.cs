@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using WebAPI.Models;
 using WebAppAPI;
+using WebAppAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -48,10 +49,16 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post(ProductModel model)
+        public ActionResult Insert(ProductModel model)
         {
             if (ModelState.IsValid)
             {
+                var product = new Product 
+                {
+                    Code = model.Code,
+                    Name = model.Name
+                };
+                _productsRepository.Insert(product);
                 return Ok();
             }
 
@@ -61,12 +68,25 @@ namespace WebAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Put (int id, ProductModel model)
         {
-            return Ok();
+            if (ModelState.IsValid)
+            {
+                var product = new Product
+                {
+                    Id = id, 
+                    Code = model.Code,
+                    Name = model.Name
+                };
+                _productsRepository.Update(product);
+                return Ok();
+            }
+
+            return BadRequest();
         }
 
         [HttpDelete("{id}")]
         public ActionResult Delete (int id)
         {
+            _productsRepository.Delete(id);
             return Ok();
         }
 
