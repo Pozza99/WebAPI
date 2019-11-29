@@ -8,6 +8,11 @@ namespace WebAPI.Models
 {
     public class ProductModel
     {
+        public ProductModel()
+        {
+
+        }
+
         public ProductModel(int id, string code, string name)
         {
             Id = id;
